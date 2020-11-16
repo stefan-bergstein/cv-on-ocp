@@ -42,12 +42,14 @@ if __name__ == "__main__":
     topic = os.getenv("TOPIC", default="distributed-video1")
     bootstrap_servers = os.getenv("BOOTSTRAP_SERVER", default="localhost:9092")
     security_protocol = os.getenv("SECURITY_PROTOCOL", default="PLAINTEXT")
-    ssl_check_hostname = bool(os.getenv("SSL_CHECK_HOSTNAME", default="FALSE"))
+    ssl_check_hostname = bool(os.getenv("SSL_CHECK_HOSTNAME", default="False"))
     ssl_cafile = os.getenv("SSL_CAFILE", default="./ca.crt")
+
 
     consumer = KafkaConsumer(topic, 
         value_deserializer=msgpack.unpackb,
         bootstrap_servers=[bootstrap_servers],
+        security_protocol=security_protocol,
         ssl_check_hostname=ssl_check_hostname,
         ssl_cafile=ssl_cafile)
 
@@ -55,5 +57,5 @@ if __name__ == "__main__":
     print("BOOTSTRAP_SERVER:" + bootstrap_servers)
     print("TOPIC:" + topic)
 
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=False)
 
